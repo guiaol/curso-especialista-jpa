@@ -1,42 +1,10 @@
 package com.algaworks.ecommerce.iniciandocomjpa;
 
+import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Produto;
 import org.junit.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-public class ConsultandoRegistroTest {
-
-    private static EntityManagerFactory entityManagerFactory;
-
-    private EntityManager entityManager;
-
-    // chamado antes dos testes serem executados
-    @BeforeClass
-    public static void setUpBeforeClass() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("Ecommerce-PU");
-    }
-
-    // chamado depois dos testes serem executados
-    @AfterClass
-    public static void tearDownClass() {
-        entityManagerFactory.close();
-    }
-
-    // Executado antes de cada teste
-    @Before
-    public void setUp() {
-        entityManager = entityManagerFactory.createEntityManager();
-    }
-
-    // Executado depois de cada teste
-    @After
-    public void tearDown() {
-        entityManager.close();
-    }
-
+public class ConsultandoRegistroTest extends EntityManagerTest {
     @Test
     public void buscarPorIdentificador() {
         Produto produto = entityManager.find(Produto.class, 1);
