@@ -10,6 +10,30 @@ import java.math.BigDecimal;
 public class OperacoesComTransacaoTest extends EntityManagerTest {
 
     @Test
+    public void removerObjeto() {
+        // 1)
+        //    Desta forma, o objeto produto nao esta gerenciado pelo entityManager.
+        //    Assim, gera o erro informando que o objeto nao esta anexado (detached) ao entityManager.
+        //    Tentou remover uma instância desanexada.
+//        Produto produto = new Produto();
+//        produto.setId(3);
+
+        // 2)
+        //   Usamos o metodo find para trazer o objeto do bd e para jogar a referência na memória do entityManger.
+        //   Dessa forma, ele se torna gerenciado pelo entityManager e o remove consegue excluir o objeto.
+        //   Remove exclui o objeto da memória do entityManager e o commit exclui da base de dados.
+        Produto produto = entityManager.find(Produto.class, 3);
+
+        entityManager.getTransaction().begin();
+        entityManager.remove(produto);
+        entityManager.getTransaction().commit();
+
+        Produto produtoVeriicacao = entityManager.find(Produto.class, 3);
+        Assert.assertNull(produtoVeriicacao);
+    }
+
+
+    @Test
     public void inserirOPrimeiroObjeto() {
         Produto produto = new Produto();
         produto.setId(2);
