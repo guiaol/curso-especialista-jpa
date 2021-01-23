@@ -8,53 +8,46 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class ConsultandoRegistrosTest {
+
     private static EntityManagerFactory entityManagerFactory;
+
     private EntityManager entityManager;
 
-    // Chamado antes de executar os testes
     @BeforeClass
     public static void setUpBeforeClass() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("Ecommerce-PU");
+        entityManagerFactory = Persistence
+                .createEntityManagerFactory("Ecommerce-PU");
     }
 
-    // Chamado depois de executar os testes
     @AfterClass
     public static void tearDownAfterClass() {
         entityManagerFactory.close();
     }
 
-    // Executado antes de cada teste
     @Before
     public void setUp() {
         entityManager = entityManagerFactory.createEntityManager();
     }
 
-    // Execitadp depois de cada teste
     @After
     public void tearDown() {
         entityManager.close();
     }
 
     @Test
-    public void buscarPorIndentificador() {
-        // vai no banco de dados
+    public void busarPorIdentificador() {
         Produto produto = entityManager.find(Produto.class, 1);
+//        Produto produto = entityManager.getReference(Produto.class, 1);
 
-        // so vai no banco se for lido uma propriedade do objeto
-//         Produto produto = entityManager.getReference(Produto.class, 1);
-//         System.out.println("Ainda não buscou");
-
-            Assert.assertNotNull(produto);
-            Assert.assertEquals("Kindle", produto.getNome());
+        Assert.assertNotNull(produto);
+        Assert.assertEquals("Kindle", produto.getNome());
     }
 
     @Test
     public void atualizarAReferencia() {
         Produto produto = entityManager.find(Produto.class, 1);
-
         produto.setNome("Microfone Samson");
 
-        // vai ao banco novamente e reinicia a entidade
         entityManager.refresh(produto);
 
         Assert.assertEquals("Kindle", produto.getNome());
