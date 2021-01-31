@@ -32,7 +32,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
         Assert.assertNotNull(produtoVerificacaoPersist);
 
 
-        
+
 
         Produto produtoMerge = new Produto();
         produtoMerge.setId(6);
