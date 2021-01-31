@@ -9,6 +9,28 @@ import java.math.BigDecimal;
 
 public class OperacoesComTransacaoTest extends EntityManagerTest {
 
+    // select(hibernate) + insert
+    @Test
+    public void inserirObjetoComMerge() {
+        Produto produto = new Produto();
+        produto.setId(4);
+        produto.setNome("Microfone Rode Videmic");
+        produto.setDescricao("Melhor qualidade de som");
+        produto.setPreco(new BigDecimal(1000));
+
+        entityManager.getTransaction().begin();
+        // o método merge serve tanto para atualizar quanto inserir
+        entityManager.merge(produto);
+        entityManager.getTransaction().commit();
+
+        // limpa a memória do entityManager, com isso o método find vai ao banco imprimindo um select no log
+        entityManager.clear();
+
+        // busca o objeto no entityManager, por isso nao fez um select no log
+        Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertNotNull(produtoVeriicacao);
+    }
+
     // select + update
     @Test
     public void atualizarObjetoGerenciado() {
@@ -32,7 +54,6 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
     // select(hibernate) + update
     @Test
     public void atualizarObjeto() {
-
         Produto produto = new Produto();
         // precisa ser igual da base de dados
         produto.setId(1);
@@ -55,6 +76,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
         Assert.assertEquals("Kindle PaperWhite", produtoVeriicacao.getNome());
     }
 
+    // select + delete
     @Test
     public void removerObjeto() {
         // 1)
@@ -78,7 +100,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
         Assert.assertNull(produtoVeriicacao);
     }
 
-
+    // insert
     @Test
     public void inserirOPrimeiroObjeto() {
         Produto produto = new Produto();
@@ -101,7 +123,6 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
         Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
         Assert.assertNotNull(produtoVeriicacao);
     }
-
 
     @Test
     public void abrirEFEcharATransacao() {
