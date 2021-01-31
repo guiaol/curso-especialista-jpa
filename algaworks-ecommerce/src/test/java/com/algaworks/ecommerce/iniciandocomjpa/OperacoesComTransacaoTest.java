@@ -9,6 +9,27 @@ import java.math.BigDecimal;
 
 public class OperacoesComTransacaoTest extends EntityManagerTest {
 
+    // select + update
+    @Test
+    public void atualizarObjetoGerenciado() {
+        Produto produto = entityManager.find(Produto.class, 1);
+
+        entityManager.getTransaction().begin();
+        // Não precisamos do método merge porque o método find retorna um objeto produto e o coloca na memória
+        // do entityManager. Qualquer alteração no objeto o entityManager percebe e ao finalizar a transação
+        // faz um update do objeto na base de dados
+        produto.setNome("Paperwhite 2ª geração");
+        entityManager.getTransaction().commit();
+
+        // limpa a memória do entityManager, com isso o método find vai ao banco imprimindo um select no log
+        entityManager.clear();
+
+        // busca o objeto no entityManager, como foi limpa a memória, faz um select na base para buscar o objeto novamente
+        Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertEquals("Paperwhite 2ª geração", produtoVeriicacao.getNome());
+    }
+
+    // select(hibernate) + update
     @Test
     public void atualizarObjeto() {
 
@@ -32,7 +53,6 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
         Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
         Assert.assertNotNull(produtoVeriicacao);
         Assert.assertEquals("Kindle PaperWhite", produtoVeriicacao.getNome());
-
     }
 
     @Test
