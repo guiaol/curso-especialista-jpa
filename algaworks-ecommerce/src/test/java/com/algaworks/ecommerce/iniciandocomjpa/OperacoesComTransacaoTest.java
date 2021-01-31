@@ -8,6 +8,61 @@ import org.junit.Test;
 import java.math.BigDecimal;
 
 public class OperacoesComTransacaoTest extends EntityManagerTest {
+    @Test
+    public void mostrarDiferencaPersistMerge() {
+        Produto produtoPersist = new Produto();
+        produtoPersist.setId(5);
+        produtoPersist.setNome("Smartphone One Plus");
+        produtoPersist.setDescricao("O processador mais rápido");
+        produtoPersist.setPreco(new BigDecimal(2000));
+
+        entityManager.getTransaction().begin();
+        // apenas comando insert
+        // pega a referência da instância passada e a coloca no entityManager
+        entityManager.persist(produtoPersist);
+        // caso a referência sofra alguma alteração após o persit, ao finalizar a transação, o hibernate fará um update
+        produtoPersist.setNome("Smartphone Two Plus ");
+        entityManager.getTransaction().commit();
+
+        // limpa a memória do entityManager, com isso o método find vai ao banco imprimindo um select no log
+        entityManager.clear();
+
+        // busca o objeto no entityManager, por isso nao fez um select no log
+        Produto produtoVerificacaoPersist = entityManager.find(Produto.class, produtoPersist.getId());
+        Assert.assertNotNull(produtoVerificacaoPersist);
+
+
+        
+
+        Produto produtoMerge = new Produto();
+        produtoMerge.setId(6);
+        produtoMerge.setNome("Notebook Dell");
+        produtoMerge.setDescricao("O melhor da categoria");
+        produtoMerge.setPreco(new BigDecimal(2000));
+
+        entityManager.getTransaction().begin();
+        // merge serve para atualizar e inserir um novo objeto.
+        // o método merge pega a instância passada, faz uma cópia dela, a retorna do método e a joga para o
+        // entityManager gerenciar.
+        // qualquer mofificação nessa instância não afetará a base de dados pois o que é passado para o entity manager
+        // é uma cópia dessa instância e não a instância por si.
+        // comandos sql:
+        //          1 - select
+        //              se não existir, faz um insert e se a referência retornada pelo merge sofrer alteração, faz update
+        // pega a referência da instância passada e a coloca no entityManager
+        produtoMerge = entityManager.merge(produtoMerge);
+        produtoMerge.setNome("Notebook Dell 2");
+        entityManager.getTransaction().commit();
+
+        // limpa a memória do entityManager, com isso o método find vai ao banco imprimindo um select no log
+        entityManager.clear();
+
+        // busca o objeto no entityManager, por isso nao fez um select no log
+        Produto produtoVerificacaoMerge = entityManager.find(Produto.class, produtoMerge.getId());
+        Assert.assertNotNull(produtoVerificacaoMerge);
+
+
+    }
 
     // select(hibernate) + insert
     @Test
