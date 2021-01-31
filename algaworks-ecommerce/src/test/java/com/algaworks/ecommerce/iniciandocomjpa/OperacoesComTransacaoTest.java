@@ -10,6 +10,32 @@ import java.math.BigDecimal;
 public class OperacoesComTransacaoTest extends EntityManagerTest {
 
     @Test
+    public void atualizarObjeto() {
+
+        Produto produto = new Produto();
+        // precisa ser igual da base de dados
+        produto.setId(1);
+        produto.setNome("Kindle PaperWhite");
+        produto.setDescricao("Conheça o novo Kindle");
+        produto.setPreco(new BigDecimal(599));
+
+        entityManager.getTransaction().begin();
+        // o metodo merge faz uma cópia do obejto não gerenciado pelo entityManger,
+        // o joga na memória do entityManager e o retorna.
+        entityManager.merge(produto);
+        entityManager.getTransaction().commit();
+
+        // limpa a memória do entityManager, com isso o método find vai ao banco imprimindo um select no log
+        entityManager.clear();
+
+        // busca o objeto no entityManager, como foi limpa a memória, faz um select na base para buscar o objeto novamente
+        Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertNotNull(produtoVeriicacao);
+        Assert.assertEquals("Kindle PaperWhite", produtoVeriicacao.getNome());
+
+    }
+
+    @Test
     public void removerObjeto() {
         // 1)
         //    Desta forma, o objeto produto nao esta gerenciado pelo entityManager.
