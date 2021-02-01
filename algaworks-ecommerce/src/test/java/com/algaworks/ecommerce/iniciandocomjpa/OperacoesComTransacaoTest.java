@@ -9,6 +9,24 @@ import java.math.BigDecimal;
 
 public class OperacoesComTransacaoTest extends EntityManagerTest {
     @Test
+    public void impedirOperacaoComBancoDeDados() {
+        Produto produto = entityManager.find(Produto.class, 1);
+
+        // desanexa uma instância que está na memória do entityManager impedindo uma inserção, atualização ou remoção
+        // no banco de dados
+        entityManager.detach(produto);
+
+        entityManager.getTransaction().begin();
+        produto.setNome("Paperwhite 2ª geração");
+        entityManager.getTransaction().commit();
+
+        entityManager.clear();
+
+        Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertEquals("Kindle", produtoVeriicacao.getNome());
+    }
+
+    @Test
     public void mostrarDiferencaPersistMerge() {
         Produto produtoPersist = new Produto();
         produtoPersist.setId(5);
