@@ -8,15 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "nota_fiscal")
-public class NotaFiscal {
+@Table(name = "pagamento_cartao")
+public class PagamentoCartao {
+
     @EqualsAndHashCode.Include
     @Id
     private Integer id;
@@ -24,8 +23,7 @@ public class NotaFiscal {
     @Column(name = "pedido_id")
     private Integer pedidoId;
 
-    private String xml;
+    private StatusPagamento status;
 
-    @Column(name = "data_emissao")
-    private Date dataEmissao;
+    private String numero;
 }

@@ -8,15 +8,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "nota_fiscal")
-public class NotaFiscal {
+@Table(name = "item_pedido")
+public class ItemPedido {
+
     @EqualsAndHashCode.Include
     @Id
     private Integer id;
@@ -24,8 +24,11 @@ public class NotaFiscal {
     @Column(name = "pedido_id")
     private Integer pedidoId;
 
-    private String xml;
+    @Column(name = "produto_id")
+    private Integer produtoId;
 
-    @Column(name = "data_emissao")
-    private Date dataEmissao;
+    @Column(name = "preco_produto")
+    private BigDecimal precoProduto;
+
+    private Integer quantidade;
 }
