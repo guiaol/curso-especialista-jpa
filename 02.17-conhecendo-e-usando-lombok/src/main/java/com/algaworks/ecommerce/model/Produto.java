@@ -10,11 +10,10 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-// gera os metodos equals e hashcode. Tem apenas os atributos que estiverem marcados com @EqualsAndHashCode.Include
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Produto {
-    // inclui o id nos metodos equals e hashCode
+
     @EqualsAndHashCode.Include
     @Id
     private Integer id;

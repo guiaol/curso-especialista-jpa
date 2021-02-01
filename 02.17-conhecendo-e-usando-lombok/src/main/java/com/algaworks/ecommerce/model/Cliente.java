@@ -6,22 +6,16 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
-// gera os metodos equals e hashcode. Tem apenas os atributos que estiverem marcados com @EqualsAndHashCode.Include
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Produto {
-    // inclui o id nos metodos equals e hashCode
+public class Cliente {
+
     @EqualsAndHashCode.Include
     @Id
     private Integer id;
 
     private String nome;
-
-    private String descricao;
-
-    private BigDecimal preco;
 }
