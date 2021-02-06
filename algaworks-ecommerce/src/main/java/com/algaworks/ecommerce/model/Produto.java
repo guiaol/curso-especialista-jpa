@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 public class Produto {
     // inclui o id nos metodos equals e hashCode
     @EqualsAndHashCode.Include
-    @Id
+    @Id 
     private Integer id;
 
     // @Column(name = "") - customiza o nome das colunas das tabelas
