@@ -12,11 +12,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "categoria")
 public class Categoria {
+
     @EqualsAndHashCode.Include
     @Id
-    // estrategia para geracao de valores para chaves primarias.
-    // usado apenas para atributos marcados como chaves primarias.
-    // nesta estrategia a implementacao da especificacao JPA, no caso hibernate, que escolhera a estrategia para geracao dos id´s.
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
