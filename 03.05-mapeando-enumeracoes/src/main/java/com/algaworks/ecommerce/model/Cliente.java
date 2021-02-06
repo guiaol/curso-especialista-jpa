@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cliente")
 public class Cliente {
+
     @EqualsAndHashCode.Include
     @Id
     private Integer id;

@@ -10,14 +10,19 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "cliente")
-public class Cliente {
+@Table(name = "pagamento_boleto")
+public class PagamentoBoleto {
+
     @EqualsAndHashCode.Include
     @Id
     private Integer id;
 
-    private String nome;
+    @Column(name = "pedido_id")
+    private Integer pedidoId;
 
     @Enumerated(EnumType.STRING)
-    private SexoCliente sexo;
+    private StatusPagamento status;
+
+    @Column(name = "codigo_barras")
+    private String codigoBarras;
 }
