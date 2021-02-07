@@ -5,22 +5,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "nota_fiscal")
+public class NotaFiscal {
+
     @EqualsAndHashCode.Include
     @Id
-    // estrategia mais simples. Melhor utilizada pelo mysql.
-    // auto incrementa as colunas que sao usadas como pk.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
+    @Column(name = "pedido_id")
+    private Integer pedidoId;
 
-    @Column(name = "categoria_pai_id")
-    private Integer categoriaPaiId;
+    private String xml;
+
+    @Column(name = "data_emissao")
+    private Date dataEmissao;
 }

@@ -10,17 +10,16 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "cliente")
+public class Cliente {
+
     @EqualsAndHashCode.Include
     @Id
-    // estrategia mais simples. Melhor utilizada pelo mysql.
-    // auto incrementa as colunas que sao usadas como pk.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String nome;
 
-    @Column(name = "categoria_pai_id")
-    private Integer categoriaPaiId;
+    @Enumerated(EnumType.STRING)
+    private SexoCliente sexo;
 }
