@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "pedido")
 public class Pedido {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +33,10 @@ public class Pedido {
     @Column(name = "nota_fiscal_id")
     private Integer notaFiscalId;
 
+    private BigDecimal total;
+
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
-
-    private BigDecimal total;
 
     @Embedded
     private EnderecoEntregaPedido enderecoEntrega;
