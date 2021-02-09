@@ -5,24 +5,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "cliente")
-public class Cliente {
+@Table(name = "pagamento_boleto")
+public class PagamentoBoleto {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
+    @Column(name = "pedido_id")
+    private Integer pedidoId;
 
     @Enumerated(EnumType.STRING)
-    private SexoCliente sexo;
+    private StatusPagamento status;
 
-    @OneToMany(mappedBy = "cliente")
-    private List<Pedido> pedidos;
+    @Column(name = "codigo_barras")
+    private String codigoBarras;
 }

@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "cliente")
 public class Cliente {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

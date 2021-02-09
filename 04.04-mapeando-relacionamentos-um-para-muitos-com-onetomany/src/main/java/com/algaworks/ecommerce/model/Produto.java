@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "cliente")
-public class Cliente {
+@Table(name = "produto")
+public class Produto {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +21,7 @@ public class Cliente {
 
     private String nome;
 
-    @Enumerated(EnumType.STRING)
-    private SexoCliente sexo;
+    private String descricao;
 
-    @OneToMany(mappedBy = "cliente")
-    private List<Pedido> pedidos;
+    private BigDecimal preco;
 }
