@@ -11,6 +11,27 @@ import java.time.LocalDateTime;
 public class RelacionamentoManyToOneTest extends EntityManagerTest {
 
     @Test
+    public void verificarRelacionamento() {
+        Cliente cliente = entityManager.find(Cliente.class, 1);
+
+        Pedido pedido = new Pedido();
+        pedido.setStatus(StatusPedido.AGUARDANDO);
+        pedido.setDataPedido(LocalDateTime.now());
+        pedido.setTotal(BigDecimal.TEN);
+
+        pedido.setCliente(cliente);
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(pedido);
+        entityManager.getTransaction().commit();
+
+        entityManager.clear();
+
+        Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
+        Assert.assertNotNull(pedidoVerificacao.getCliente());
+    }
+
+    @Test
     public void verificarRelacionamentoItemPedido() {
         Cliente cliente = entityManager.find(Cliente.class, 1);
         Produto produto = entityManager.find(Produto.class, 1);
@@ -32,29 +53,10 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest {
         entityManager.persist(itemPedido);
         entityManager.getTransaction().commit();
 
+        entityManager.clear();
+
         ItemPedido itemPedidoVerificacao = entityManager.find(ItemPedido.class, itemPedido.getId());
         Assert.assertNotNull(itemPedidoVerificacao.getPedido());
         Assert.assertNotNull(itemPedidoVerificacao.getProduto());
-    }
-
-    @Test
-    public void verificarRelacionamento() {
-        Cliente cliente = entityManager.find(Cliente.class, 1);
-
-        Pedido pedido = new Pedido();
-        pedido.setStatus(StatusPedido.AGUARDANDO);
-        pedido.setDataPedido(LocalDateTime.now());
-        pedido.setTotal(BigDecimal.TEN);
-
-        pedido.setCliente(cliente);
-
-        entityManager.getTransaction().begin();
-        entityManager.persist(pedido);
-        entityManager.getTransaction().commit();
-
-        entityManager.clear();
-
-        Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
-        Assert.assertNotNull(pedido.getCliente());
     }
 }
