@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "produto")
 public class Produto {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,13 +26,9 @@ public class Produto {
 
     private BigDecimal preco;
 
-    @OneToMany(mappedBy = "produto")
-    private List<ItemPedido> itens;
-
     @ManyToMany
     @JoinTable(name = "produto_categoria",
             joinColumns = @JoinColumn(name = "produto_id"),
-            inverseJoinColumns = @JoinColumn(name = "categoria_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias;
 }
