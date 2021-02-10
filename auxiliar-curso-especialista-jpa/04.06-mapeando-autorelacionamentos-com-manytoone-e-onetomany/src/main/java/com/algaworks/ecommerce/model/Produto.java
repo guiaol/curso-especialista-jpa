@@ -5,27 +5,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "produto")
+public class Produto {
+
     @EqualsAndHashCode.Include
     @Id
-    // estrategia mais simples. Melhor utilizada pelo mysql.
-    // auto incrementa as colunas que sao usadas como pk.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "categoria_pai_id")
-    private Categoria categoriaPai;
+    private String descricao;
 
-    @OneToMany(mappedBy = "categoriaPai")
-    private List<Categoria> categorias;
+    private BigDecimal preco;
 }
