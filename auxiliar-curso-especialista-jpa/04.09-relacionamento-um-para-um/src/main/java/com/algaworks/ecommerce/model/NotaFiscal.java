@@ -5,25 +5,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "pagamento_cartao")
-public class PagamentoCartao {
+@Table(name = "nota_fiscal")
+public class NotaFiscal {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String numero;
+    @Column(name = "pedido_id")
+    private Integer pedidoId;
 
-    @Enumerated(EnumType.STRING)
-    private StatusPagamento status;
+    private String xml;
 
-    @OneToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    @Column(name = "data_emissao")
+    private Date dataEmissao;
 }

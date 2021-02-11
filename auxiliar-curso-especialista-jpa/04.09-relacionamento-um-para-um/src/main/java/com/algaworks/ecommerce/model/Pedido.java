@@ -15,10 +15,18 @@ import java.util.List;
 @Entity
 @Table(name = "pedido")
 public class Pedido {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    @OneToMany(mappedBy = "pedido")
+    private List<ItemPedido> itens;
 
     @Column(name = "data_pedido")
     private LocalDateTime dataPedido;
@@ -29,21 +37,14 @@ public class Pedido {
     @Column(name = "nota_fiscal_id")
     private Integer notaFiscalId;
 
+    private BigDecimal total;
+
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
 
-    private BigDecimal total;
+    @OneToOne(mappedBy = "pedido")
+    private PagamentoCartao pagamento;
 
     @Embedded
     private EnderecoEntregaPedido enderecoEntrega;
-
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
-
-    @OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itens;
-
-    @OneToOne(mappedBy = "pedido")
-    private PagamentoCartao pagamento;
 }

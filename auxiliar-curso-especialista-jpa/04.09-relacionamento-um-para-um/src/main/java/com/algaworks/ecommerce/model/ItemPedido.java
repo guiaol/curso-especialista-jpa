@@ -11,19 +11,24 @@ import java.math.BigDecimal;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "pagamento_cartao")
-public class PagamentoCartao {
+@Table(name = "item_pedido")
+public class ItemPedido {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String numero;
-
-    @Enumerated(EnumType.STRING)
-    private StatusPagamento status;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
+
+    @ManyToOne
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
+
+    @Column(name = "preco_produto")
+    private BigDecimal precoProduto;
+
+    private Integer quantidade;
 }

@@ -5,25 +5,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "pagamento_cartao")
-public class PagamentoCartao {
+@Table(name = "cliente")
+public class Cliente {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String numero;
+    private String nome;
 
     @Enumerated(EnumType.STRING)
-    private StatusPagamento status;
+    private SexoCliente sexo;
 
-    @OneToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
 }

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -13,17 +12,18 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "pagamento_cartao")
 public class PagamentoCartao {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String numero;
+    @OneToOne
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 
     @Enumerated(EnumType.STRING)
     private StatusPagamento status;
 
-    @OneToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    private String numero;
 }
