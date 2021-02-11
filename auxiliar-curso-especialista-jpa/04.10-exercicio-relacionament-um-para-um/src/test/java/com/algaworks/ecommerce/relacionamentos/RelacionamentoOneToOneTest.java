@@ -5,6 +5,7 @@ import com.algaworks.ecommerce.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 

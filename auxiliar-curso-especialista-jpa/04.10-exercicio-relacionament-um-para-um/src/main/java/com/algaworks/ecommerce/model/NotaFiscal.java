@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -14,18 +14,18 @@ import java.util.Date;
 @Entity
 @Table(name = "nota_fiscal")
 public class NotaFiscal {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String xml;
-
-    @Column(name = "data_emissao")
-    private Date dataEmissao;
-
     @OneToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 
+    private String xml;
+
+    @Column(name = "data_emissao")
+    private Date dataEmissao;
 }
