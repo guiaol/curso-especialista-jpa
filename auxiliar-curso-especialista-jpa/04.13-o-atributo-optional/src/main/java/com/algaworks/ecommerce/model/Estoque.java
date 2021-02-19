@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "estoque")
 public class Estoque {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

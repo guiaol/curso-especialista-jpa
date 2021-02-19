@@ -23,7 +23,7 @@ public class PagamentoCartao {
     @Enumerated(EnumType.STRING)
     private StatusPagamento status;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 }

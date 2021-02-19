@@ -10,16 +10,20 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "estoque")
-public class Estoque {
+@Table(name = "pagamento_cartao")
+public class PagamentoCartao {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "produto_id")
-    private Produto produto;
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 
-    private Integer quantidade;
+    @Enumerated(EnumType.STRING)
+    private StatusPagamento status;
+
+    private String numero;
 }
