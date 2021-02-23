@@ -1,4 +1,4 @@
-package com.algaworks.ecommerce.com.algaworks.ecommerce.conhecendoentitymanager;
+package com.algaworks.ecommerce.conhecendoentitymanager;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Categoria;
