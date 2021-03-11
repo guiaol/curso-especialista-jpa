@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.relacionamentos;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.*;
 import com.mysql.cj.protocol.x.XProtocol;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,10 +36,7 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest {
         itemPedido.setQuantidade(1);
         itemPedido.setPedido(pedido);
         itemPedido.setProduto(produto);
-        itemPedido.setPedidoId(pedido.getId());
-        itemPedido.setProdutoId(produto.getId());
-
-
+        itemPedido.setId(new ItemPedidoId(pedido.getId(), produto.getId()));
 
         entityManager.persist(itemPedido);
         entityManager.getTransaction().commit();
