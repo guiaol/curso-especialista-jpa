@@ -21,13 +21,8 @@ public class ChaveCompostaTest extends EntityManagerTest {
         pedido.setDataCriacao(LocalDateTime.now());
         pedido.setStatus(StatusPedido.AGUARDANDO);
 
-        entityManager.persist(pedido);
-
-        // pega o que esta na memoria do em e sincroniza com o banco de dados
-        entityManager.flush();
-
         ItemPedido itemPedido = new ItemPedido();
-        itemPedido.setId(new ItemPedidoId(pedido.getId(), produto.getId()));
+        itemPedido.setId(new ItemPedidoId());
         itemPedido.setPedido(pedido);
         itemPedido.setProduto(produto);
         itemPedido.setPrecoProduto(produto.getPreco());
@@ -43,6 +38,42 @@ public class ChaveCompostaTest extends EntityManagerTest {
         Assert.assertNotNull(pedidoVerificacao);
         Assert.assertFalse(pedidoVerificacao.getItens().isEmpty());
     }
+
+
+//    @Test
+//    public void salvarItem() {
+//        entityManager.getTransaction().begin();
+//
+//        Cliente cliente = entityManager.find(Cliente.class, 1);
+//        Produto produto = entityManager.find(Produto.class, 1);
+//
+//        Pedido pedido = new Pedido();
+//        pedido.setCliente(cliente);
+//        pedido.setDataCriacao(LocalDateTime.now());
+//        pedido.setStatus(StatusPedido.AGUARDANDO);
+//
+//        entityManager.persist(pedido);
+//
+//        // pega o que esta na memoria do em e sincroniza com o banco de dados
+//        entityManager.flush();
+//
+//        ItemPedido itemPedido = new ItemPedido();
+//        itemPedido.setId(new ItemPedidoId(pedido.getId(), produto.getId()));
+//        itemPedido.setPedido(pedido);
+//        itemPedido.setProduto(produto);
+//        itemPedido.setPrecoProduto(produto.getPreco());
+//        itemPedido.setQuantidade(1);
+//
+//        entityManager.persist(itemPedido);
+//
+//        entityManager.getTransaction().commit();
+//
+//        entityManager.clear();
+//
+//        Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
+//        Assert.assertNotNull(pedidoVerificacao);
+//        Assert.assertFalse(pedidoVerificacao.getItens().isEmpty());
+//    }
 
     @Test
     public void buscarItem() {

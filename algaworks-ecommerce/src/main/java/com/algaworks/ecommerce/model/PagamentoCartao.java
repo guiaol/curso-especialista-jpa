@@ -13,16 +13,16 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "pagamento_cartao")
 public class PagamentoCartao {
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+
+    @EmbeddedId
+    private PagamentoCartaoId id;
 
     private String numero;
 
     @Enumerated(EnumType.STRING)
     private StatusPagamento status;
 
+    @MapsId("pedidoId")
     @OneToOne(optional = false)
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
