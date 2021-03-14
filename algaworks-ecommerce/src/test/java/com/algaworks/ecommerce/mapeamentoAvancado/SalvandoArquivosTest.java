@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.mapeamentoAvancado;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.NotaFiscal;
 import com.algaworks.ecommerce.model.Pedido;
+import com.algaworks.ecommerce.model.Produto;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class SalvandoArquivosTest extends EntityManagerTest {
@@ -27,6 +29,8 @@ public class SalvandoArquivosTest extends EntityManagerTest {
         entityManager.getTransaction().begin();
         entityManager.persist(notaFiscal);
         entityManager.getTransaction().commit();
+
+        entityManager.clear();
 
         NotaFiscal notaFiscalVerificacao = entityManager.find(NotaFiscal.class, notaFiscal.getId());
         Assert.assertNotNull(notaFiscalVerificacao.getXml());
@@ -47,6 +51,44 @@ public class SalvandoArquivosTest extends EntityManagerTest {
         try {
             return SalvandoArquivosTest.class.getResourceAsStream(
                     "/nota-fiscal.xml").readAllBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void salvarFoto() {
+        Produto produto = new Produto();
+        produto.setDataCriacao(LocalDateTime.now());
+        produto.setNome("Guilherme");
+        produto.setDescricao("Cara fodaaa!!!");
+        produto.setFoto(carregarFoto());
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(produto);
+        entityManager.getTransaction().commit();
+
+        entityManager.clear();
+
+        Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertNotNull(produtoVerificacao.getFoto());
+        Assert.assertTrue(produtoVerificacao.getFoto().length > 0);
+
+        try {
+            OutputStream out = new FileOutputStream(
+                    Files.createFile(Paths.get(
+                            System.getProperty("user.home") + "/gui.jpg")).toFile());
+            out.write(produtoVerificacao.getFoto());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static byte[] carregarFoto() {
+        try {
+            return SalvandoArquivosTest.class.getResourceAsStream(
+                    "/gui.jpg").readAllBytes();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
