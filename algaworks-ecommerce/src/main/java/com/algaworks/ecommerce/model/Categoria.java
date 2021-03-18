@@ -9,16 +9,9 @@ import java.util.List;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "categoria")
-public class Categoria {
-    @EqualsAndHashCode.Include
-    @Id
-    // estrategia mais simples. Melhor utilizada pelo mysql.
-    // auto incrementa as colunas que sao usadas como pk.
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Categoria extends EntidadeBaseInteger {
 
     private String nome;
 
