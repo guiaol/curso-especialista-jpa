@@ -4,8 +4,6 @@ import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Pedido;
 import org.junit.Test;
 
-import javax.persistence.EntityManagerFactory;
-
 public class EagerELazyTest extends EntityManagerTest {
     @Test
     public void verificarComportamento() {

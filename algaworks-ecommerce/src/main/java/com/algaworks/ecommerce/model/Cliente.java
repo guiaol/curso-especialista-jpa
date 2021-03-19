@@ -1,6 +1,5 @@
 package com.algaworks.ecommerce.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,3 +46,4 @@ public class Cliente extends EntidadeBaseInteger {
         }
     }
 }
+

@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -33,4 +32,3 @@ public class ItemPedido {
     @JoinColumn(name = "produto_id")
     private Produto produto;
 }
-

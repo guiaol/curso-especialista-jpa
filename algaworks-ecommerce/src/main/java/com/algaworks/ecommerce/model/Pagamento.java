@@ -4,23 +4,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "nota_fiscal")
-public class NotaFiscal extends EntidadeBaseInteger {
-
-    @Lob
-    private byte[] xml;
-
-    @Column(name = "data_emissao")
-    private Date dataEmissao;
+@Table(name = "pagamento")
+public abstract class Pagamento extends EntidadeBaseInteger {
 
     @MapsId
     @OneToOne(optional = false)
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
+
+    @Enumerated(EnumType.STRING)
+    private StatusPagamento status;
 
 }
