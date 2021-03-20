@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
-//@DiscriminatorValue("boleto")
+@DiscriminatorValue("boleto")
 @Entity
 @Table(name = "pagamento_boleto")
 public class PagamentoBoleto  extends Pagamento {
