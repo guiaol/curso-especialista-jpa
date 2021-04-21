@@ -17,15 +17,14 @@ public class ElementCollectionTest extends EntityManagerTest {
         entityManager.getTransaction().begin();
 
         Produto produto = entityManager.find(Produto.class, 1);
-        produto.setTags(Arrays.asList("ebook", "livro digital"));
+        produto.setTags(Arrays.asList("ebook", "livro-digital"));
 
         entityManager.getTransaction().commit();
 
         entityManager.clear();
 
-        Produto protudoVerificacao = entityManager.find(Produto.class, produto.getId());
-        Assert.assertFalse(produto.getTags().isEmpty());
-
+        Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertFalse(produtoVerificacao.getTags().isEmpty());
     }
 
     @Test
@@ -39,9 +38,8 @@ public class ElementCollectionTest extends EntityManagerTest {
 
         entityManager.clear();
 
-        Produto protudoVerificacao = entityManager.find(Produto.class, produto.getId());
-        Assert.assertFalse(produto.getAtributos().isEmpty());
-
+        Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertFalse(produtoVerificacao.getAtributos().isEmpty());
     }
 
     @Test
@@ -56,8 +54,9 @@ public class ElementCollectionTest extends EntityManagerTest {
         entityManager.clear();
 
         Cliente clienteVerificacao = entityManager.find(Cliente.class, cliente.getId());
-        Assert.assertEquals("fernando@email.com", cliente.getContatos().get("email"));
-
+        Assert.assertEquals(
+                "fernando@email.com", clienteVerificacao.getContatos().get("email"));
     }
+
 
 }

@@ -6,35 +6,38 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class OperacoesComTransacaoTest extends EntityManagerTest {
+
     @Test
     public void impedirOperacaoComBancoDeDados() {
         Produto produto = entityManager.find(Produto.class, 1);
-
         entityManager.detach(produto);
 
         entityManager.getTransaction().begin();
-        produto.setNome("Paperwhite 2ª geração");
+        produto.setNome("Kindle Paperwhite 2ª Geração");
         entityManager.getTransaction().commit();
 
         entityManager.clear();
 
-        Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
-        Assert.assertEquals("Kindle", produtoVeriicacao.getNome());
+        Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertEquals("Kindle", produtoVerificacao.getNome());
     }
 
     @Test
-    public void mostrarDiferencaPersistMerge() {
+    public void mostrarDifencaPersistMerge() {
         Produto produtoPersist = new Produto();
-//        produtoPersist.setId(5); // comentando porque estamos utilizando IDENTITY
+
+//        produtoPersist.setId(5);
         produtoPersist.setNome("Smartphone One Plus");
-        produtoPersist.setDescricao("O processador mais rápido");
+        produtoPersist.setDescricao("O processador mais rápido.");
         produtoPersist.setPreco(new BigDecimal(2000));
+        produtoPersist.setDataCriacao(LocalDateTime.now());
 
         entityManager.getTransaction().begin();
         entityManager.persist(produtoPersist);
-        produtoPersist.setNome("Smartphone Two Plus ");
+        produtoPersist.setNome("Smartphone Two Plus");
         entityManager.getTransaction().commit();
 
         entityManager.clear();
@@ -44,12 +47,13 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
 
 
 
-
         Produto produtoMerge = new Produto();
-//        produtoMerge.setId(6); // comentando porque estamos utilizando IDENTITY
+
+//        produtoMerge.setId(6);
         produtoMerge.setNome("Notebook Dell");
-        produtoMerge.setDescricao("O melhor da categoria");
+        produtoMerge.setDescricao("O melhor da categoria.");
         produtoMerge.setPreco(new BigDecimal(2000));
+        produtoMerge.setDataCriacao(LocalDateTime.now());
 
         entityManager.getTransaction().begin();
         produtoMerge = entityManager.merge(produtoMerge);
@@ -62,66 +66,60 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
         Assert.assertNotNull(produtoVerificacaoMerge);
     }
 
-    // Com a estrategia GenerationType.IDENTITY, precisamos pegar a referencia que o metodo merge retorna para que
-    // o codigo consiga executar.
-    // select(hibernate) + insert
     @Test
     public void inserirObjetoComMerge() {
         Produto produto = new Produto();
-//        produto.setId(4); // comentando porque estamos utilizando IDENTITY
+
+//        produto.setId(4);
         produto.setNome("Microfone Rode Videmic");
-        produto.setDescricao("Melhor qualidade de som");
+        produto.setDescricao("A melhor qualidade de som.");
         produto.setPreco(new BigDecimal(1000));
+        produto.setDataCriacao(LocalDateTime.now());
 
         entityManager.getTransaction().begin();
-        // necessario devido a estrategia GenerationType.IDENTITY
-        produto = entityManager.merge(produto);
+        Produto produtoSalvo = entityManager.merge(produto);
         entityManager.getTransaction().commit();
 
         entityManager.clear();
 
-        Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
-        Assert.assertNotNull(produtoVeriicacao);
+        Produto produtoVerificacao = entityManager.find(Produto.class, produtoSalvo.getId());
+        Assert.assertNotNull(produtoVerificacao);
     }
 
-    // select + update
     @Test
     public void atualizarObjetoGerenciado() {
         Produto produto = entityManager.find(Produto.class, 1);
 
         entityManager.getTransaction().begin();
-        produto.setNome("Paperwhite 2ª geração");
+        produto.setNome("Kindle Paperwhite 2ª Geração");
         entityManager.getTransaction().commit();
 
         entityManager.clear();
 
-        Produto produtoVeriicacao = entityManager.find(Produto.class, produto.getId());
-        Assert.assertEquals("Paperwhite 2ª geração", produtoVeriicacao.getNome());
+        Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertEquals("Kindle Paperwhite 2ª Geração", produtoVerificacao.getNome());
     }
 
-    // select(hibernate) + update
-    // Com a estrategia GenerationType.IDENTITY, precisamos pegar a referencia que o metodo merge retorna para que
-    // o codigo consiga executar.
     @Test
     public void atualizarObjeto() {
-        Produto produto = entityManager.find(Produto.class, 1);
-        // precisa ser igual da base de dados
-        produto.setNome("Kindle PaperWhite");
+        Produto produto = new Produto();
+
+        produto.setId(1);
+        produto.setNome("Kindle Paperwhite");
+        produto.setDescricao("Conheça o novo Kindle.");
+        produto.setPreco(new BigDecimal(599));
 
         entityManager.getTransaction().begin();
-        produto = entityManager.merge(produto);
+        entityManager.merge(produto);
         entityManager.getTransaction().commit();
 
-        // limpa a memória do entityManager, com isso o método find vai ao banco imprimindo um select no log
         entityManager.clear();
 
-        // busca o objeto no entityManager, como foi limpa a memória, faz um select na base para buscar o objeto novamente
         Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
         Assert.assertNotNull(produtoVerificacao);
-        Assert.assertEquals("Kindle PaperWhite", produtoVerificacao.getNome());
+        Assert.assertEquals("Kindle Paperwhite", produtoVerificacao.getNome());
     }
 
-    // select + delete
     @Test
     public void removerObjeto() {
         Produto produto = entityManager.find(Produto.class, 3);
@@ -130,20 +128,21 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
         entityManager.remove(produto);
         entityManager.getTransaction().commit();
 
-        Produto produtoVeriicacao = entityManager.find(Produto.class, 3);
-        Assert.assertNull(produtoVeriicacao);
+//        entityManager.clear(); Não é necessário na asserção para operação de remoção.
+
+        Produto produtoVerificacao = entityManager.find(Produto.class, 3);
+        Assert.assertNull(produtoVerificacao);
     }
 
-    // insert
-    // Com a estrategia GenerationType.IDENTITY, precisamos pegar a referencia que o metodo merge retorna para que
-    // o codigo consiga executar.
     @Test
     public void inserirOPrimeiroObjeto() {
         Produto produto = new Produto();
-//        produto.setId(2); // comentando porque estamos utilizando IDENTITY
+
+//        produto.setId(2);
         produto.setNome("Câmera Canon");
-        produto.setDescricao("A melhor definição para suas fotos");
+        produto.setDescricao("A melhor definição para suas fotos.");
         produto.setPreco(new BigDecimal(5000));
+        produto.setDataCriacao(LocalDateTime.now());
 
         entityManager.getTransaction().begin();
         entityManager.persist(produto);
@@ -156,19 +155,15 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
     }
 
     @Test
-    public void abrirEFEcharATransacao() {
-//        Produto produto = new Produto();
+    public void abrirEFecharATransacao() {
+//        Produto produto = new Produto(); // Somente para o método não mostrar erros.
 
-        // para realizar mudancas no banco de dados precisamos estar dentro de uma transacao
-        // para aplicacoes web begin e commit sao automatizados
-        // marco o inicio da transacao
         entityManager.getTransaction().begin();
 
 //        entityManager.persist(produto);
 //        entityManager.merge(produto);
 //        entityManager.remove(produto);
 
-        // marco o final da transacao
         entityManager.getTransaction().commit();
     }
 }

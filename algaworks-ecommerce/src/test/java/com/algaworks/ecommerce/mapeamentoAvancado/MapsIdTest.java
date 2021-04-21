@@ -10,14 +10,14 @@ import java.util.Date;
 
 public class MapsIdTest extends EntityManagerTest {
 
-     @Test
+    @Test
     public void inserirPagamento() {
         Pedido pedido = entityManager.find(Pedido.class, 1);
 
         NotaFiscal notaFiscal = new NotaFiscal();
         notaFiscal.setPedido(pedido);
         notaFiscal.setDataEmissao(new Date());
-//        notaFiscal.setXml("<xml/>");
+        notaFiscal.setXml("<xml/>".getBytes());
 
         entityManager.getTransaction().begin();
         entityManager.persist(notaFiscal);
@@ -59,5 +59,4 @@ public class MapsIdTest extends EntityManagerTest {
                 ItemPedido.class, new ItemPedidoId(pedido.getId(), produto.getId()));
         Assert.assertNotNull(itemPedidoVerificacao);
     }
-
 }

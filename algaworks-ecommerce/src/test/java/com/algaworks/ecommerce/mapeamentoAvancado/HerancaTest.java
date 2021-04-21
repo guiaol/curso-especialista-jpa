@@ -13,6 +13,8 @@ public class HerancaTest extends EntityManagerTest {
     public void salvarCliente() {
         Cliente cliente = new Cliente();
         cliente.setNome("Fernanda Morais");
+        cliente.setSexo(SexoCliente.FEMININO);
+        cliente.setCpf("333");
 
         entityManager.getTransaction().begin();
         entityManager.persist(cliente);
@@ -40,7 +42,7 @@ public class HerancaTest extends EntityManagerTest {
         PagamentoCartao pagamentoCartao = new PagamentoCartao();
         pagamentoCartao.setPedido(pedido);
         pagamentoCartao.setStatus(StatusPagamento.PROCESSANDO);
-        pagamentoCartao.setNumeroCartao("1234");
+        pagamentoCartao.setNumeroCartao("123");
 
         entityManager.getTransaction().begin();
         entityManager.persist(pagamentoCartao);

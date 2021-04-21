@@ -6,26 +6,21 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ConsultandoRegistrosTest extends EntityManagerTest {
+
     @Test
-    public void buscarPorIndentificador() {
-        // vai no banco de dados
+    public void busarPorIdentificador() {
         Produto produto = entityManager.find(Produto.class, 1);
+//        Produto produto = entityManager.getReference(Produto.class, 1);
 
-        // so vai no banco se for lido uma propriedade do objeto
-//         Produto produto = entityManager.getReference(Produto.class, 1);
-//         System.out.println("Ainda não buscou");
-
-            Assert.assertNotNull(produto);
-            Assert.assertEquals("Kindle", produto.getNome());
+        Assert.assertNotNull(produto);
+        Assert.assertEquals("Kindle", produto.getNome());
     }
 
     @Test
     public void atualizarAReferencia() {
         Produto produto = entityManager.find(Produto.class, 1);
-
         produto.setNome("Microfone Samson");
 
-        // vai ao banco novamente e reinicia a entidade
         entityManager.refresh(produto);
 
         Assert.assertEquals("Kindle", produto.getNome());

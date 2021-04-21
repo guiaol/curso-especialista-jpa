@@ -50,5 +50,4 @@ public class DetalhesColumnTest extends EntityManagerTest {
         Assert.assertEquals(produto.getDataUltimaAtualizacao().truncatedTo(ChronoUnit.SECONDS),
                 produtoVerificacao.getDataUltimaAtualizacao().truncatedTo(ChronoUnit.SECONDS));
     }
-
 }

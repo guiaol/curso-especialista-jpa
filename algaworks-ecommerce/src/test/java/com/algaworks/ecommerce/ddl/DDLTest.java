@@ -6,8 +6,7 @@ import org.junit.Test;
 public class DDLTest extends EntityManagerTest {
 
     @Test
-    public void gerarDdl() {
-        // Teste vazio... somente para exibir DDL.
+    public void gerarDDL() {
+        // Teste vazio... Somente para exibir DDL.
     }
-
 }
