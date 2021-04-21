@@ -22,4 +22,3 @@ public class ItemPedidoId implements Serializable {
     @Column(name = "produto_id")
     private Integer produtoId;
 }
-

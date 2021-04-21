@@ -17,11 +17,6 @@ public class ItemPedido {
     @EmbeddedId
     private ItemPedidoId id;
 
-    @Column(name = "preco_produto")
-    private BigDecimal precoProduto;
-
-    private Integer quantidade;
-
     @MapsId("pedidoId")
     @ManyToOne(optional = false)
     @JoinColumn(name = "pedido_id")
@@ -31,4 +26,10 @@ public class ItemPedido {
     @ManyToOne(optional = false)
     @JoinColumn(name = "produto_id")
     private Produto produto;
+
+    @Column(name = "preco_produto", nullable = false)
+    private BigDecimal precoProduto;
+
+    @Column(nullable = false)
+    private Integer quantidade;
 }

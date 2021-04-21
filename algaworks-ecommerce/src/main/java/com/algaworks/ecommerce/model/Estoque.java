@@ -17,4 +17,3 @@ public class Estoque extends EntidadeBaseInteger {
 
     private Integer quantidade;
 }
-

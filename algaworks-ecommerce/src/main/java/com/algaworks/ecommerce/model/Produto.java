@@ -11,50 +11,47 @@ import java.util.List;
 
 @Getter
 @Setter
-@EntityListeners({GenericoListener.class})
+@EntityListeners({ GenericoListener.class })
 @Entity
 @Table(name = "produto",
-        uniqueConstraints = { @UniqueConstraint( name = "unq_nome", columnNames = {"nome"} )},
-        indexes = { @Index( name = "idx_nome", columnList = "nome") })
+        uniqueConstraints = { @UniqueConstraint(name = "unq_nome", columnNames = { "nome" }) },
+        indexes = { @Index(name = "idx_nome", columnList = "nome") })
 public class Produto extends EntidadeBaseInteger {
 
-    @Column(name = "data_criacao", updatable = false)
+    @Column(name = "data_criacao", updatable = false, nullable = false)
     private LocalDateTime dataCriacao;
 
     @Column(name = "data_ultima_atualizacao", insertable = false)
     private LocalDateTime dataUltimaAtualizacao;
 
-    @Column(length = 100, nullable = false) // nome varchar(100) not null
+    @Column(length = 100, nullable = false)
     private String nome;
 
     @Column(columnDefinition = "varchar(275) not null default 'descricao'")
     private String descricao;
 
-    @Column(precision = 10, scale = 2) // preco decimal (10, 2)
     private BigDecimal preco;
 
-    @OneToMany(mappedBy = "produto")
-    private List<ItemPedido> itens;
+    @Lob
+    private byte[] foto;
 
     @ManyToMany
     @JoinTable(name = "produto_categoria",
             joinColumns = @JoinColumn(name = "produto_id"),
-            inverseJoinColumns = @JoinColumn(name = "categoria_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias;
 
     @OneToOne(mappedBy = "produto")
     private Estoque estoque;
 
     @ElementCollection
-    @CollectionTable(name = "produto_tag", joinColumns = @JoinColumn(name = "produto_id"))
-    @Column(name = "tag")
+    @CollectionTable(name = "produto_tag",
+            joinColumns = @JoinColumn(name = "produto_id"))
+    @Column(name = "tag", length = 50, nullable = false)
     private List<String> tags;
 
     @ElementCollection
-    @CollectionTable(name = "protudo_atributo", joinColumns = @JoinColumn(name = "produto_id"))
+    @CollectionTable(name = "produto_atributo",
+            joinColumns = @JoinColumn(name = "produto_id"))
     private List<Atributo> atributos;
-
-    @Lob
-    private byte[] foto;
 }

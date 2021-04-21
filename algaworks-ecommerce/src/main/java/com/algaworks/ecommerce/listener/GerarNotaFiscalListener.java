@@ -9,7 +9,7 @@ import javax.persistence.PreUpdate;
 /*
   Quando o pedido for pago eu gero a nota fiscal daquele pedido.
  */
-public class GerarNotalFiscalListener {
+public class GerarNotaFiscalListener {
 
     private NotaFiscalService notaFiscalService = new NotaFiscalService();
 

@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,16 +13,20 @@ import java.util.Map;
 @Setter
 @SecondaryTable(name = "cliente_detalhe", pkJoinColumns = @PrimaryKeyJoinColumn(name = "cliente_id"))
 @Entity
-@Table(name = "cliente", uniqueConstraints = { @UniqueConstraint(name = "unq_cpf", columnNames = {"cpf"})},
+@Table(name = "cliente",
+        uniqueConstraints = { @UniqueConstraint(name = "unq_cpf", columnNames = { "cpf" }) },
         indexes = { @Index(name = "idx_nome", columnList = "nome") })
 public class Cliente extends EntidadeBaseInteger {
 
+    @Column(length = 100, nullable = false)
     private String nome;
 
+    @Column(length = 14, nullable = false)
     private String cpf;
 
     @ElementCollection
-    @CollectionTable(name = "cliente_contato", joinColumns = @JoinColumn(name = "cliente_id"))
+    @CollectionTable(name = "cliente_contato",
+            joinColumns = @JoinColumn(name = "cliente_id"))
     @MapKeyColumn(name = "tipo")
     @Column(name = "descricao")
     private Map<String, String> contatos;
@@ -29,7 +34,7 @@ public class Cliente extends EntidadeBaseInteger {
     @Transient
     private String primeiroNome;
 
-    @Column(table = "cliente_detalhe")
+    @Column(table = "cliente_detalhe", length = 30, nullable = false)
     @Enumerated(EnumType.STRING)
     private SexoCliente sexo;
 
@@ -40,7 +45,7 @@ public class Cliente extends EntidadeBaseInteger {
     private List<Pedido> pedidos;
 
     @PostLoad
-    public void configurarPrimeiroNome() {
+    public void configurarPrimeiroNome(){
         if (nome != null && !nome.isBlank()) {
             int index = nome.indexOf(" ");
             if (index > -1) {
@@ -49,4 +54,3 @@ public class Cliente extends EntidadeBaseInteger {
         }
     }
 }
-
