@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class CascadeTypePersistTest extends EntityManagerTest {
 
-    @Test
+//    @Test
     public void persistProdutoComCategoria() {
         Produto produto = new Produto();
         produto.setDataCriacao(LocalDateTime.now());
