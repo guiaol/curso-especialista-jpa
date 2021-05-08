@@ -22,7 +22,7 @@ public class Pedido extends EntidadeBaseInteger {
             foreignKey = @ForeignKey(name = "fk_pedido_cliente"))
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ItemPedido> itens;
 
     @Column(name = "data_criacao", updatable = false, nullable = false)
