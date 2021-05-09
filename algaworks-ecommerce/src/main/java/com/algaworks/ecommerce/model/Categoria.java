@@ -1,6 +1,5 @@
 package com.algaworks.ecommerce.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +18,7 @@ public class Categoria extends EntidadeBaseInteger {
 
     @ManyToOne
     @JoinColumn(name = "categoria_pai_id",
-            foreignKey = @ForeignKey(name = "fk_categoria_categoria_pai"))
+            foreignKey = @ForeignKey(name = "fk_categoria_categoriapai"))
     private Categoria categoriaPai;
 
     @OneToMany(mappedBy = "categoriaPai")

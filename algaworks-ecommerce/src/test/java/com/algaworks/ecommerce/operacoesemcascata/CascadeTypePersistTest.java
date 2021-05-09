@@ -8,13 +8,12 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CascadeTypePersistTest extends EntityManagerTest {
 
-//    @Test
-    public void persistProdutoComCategoria() {
+    // @Test
+    public void persistirProdutoComCategoria() {
         Produto produto = new Produto();
         produto.setDataCriacao(LocalDateTime.now());
         produto.setPreco(BigDecimal.TEN);
@@ -22,7 +21,7 @@ public class CascadeTypePersistTest extends EntityManagerTest {
         produto.setDescricao("A melhor qualidade de som");
 
         Categoria categoria = new Categoria();
-        categoria.setNome("Audio");
+        categoria.setNome("Áudio");
 
         produto.setCategorias(Arrays.asList(categoria)); // CascadeType.PERSIST
 
@@ -30,11 +29,13 @@ public class CascadeTypePersistTest extends EntityManagerTest {
         entityManager.persist(produto);
         entityManager.getTransaction().commit();
 
+        entityManager.clear();
+
         Categoria categoriaVerificacao = entityManager.find(Categoria.class, categoria.getId());
         Assert.assertNotNull(categoriaVerificacao);
     }
 
-//    @Test
+    // @Test
     public void persistirPedidoComItens() {
         Cliente cliente = entityManager.find(Cliente.class, 1);
         Produto produto = entityManager.find(Produto.class, 1);
@@ -63,10 +64,9 @@ public class CascadeTypePersistTest extends EntityManagerTest {
         Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
         Assert.assertNotNull(pedidoVerificacao);
         Assert.assertFalse(pedidoVerificacao.getItens().isEmpty());
-
     }
 
-//    @Test
+    @Test
     public void persistirItemPedidoComPedido() {
         Cliente cliente = entityManager.find(Cliente.class, 1);
         Produto produto = entityManager.find(Produto.class, 1);
@@ -94,7 +94,7 @@ public class CascadeTypePersistTest extends EntityManagerTest {
         Assert.assertNotNull(pedidoVerificacao);
     }
 
-//    @Test
+    // @Test
     public void persistirPedidoComCliente() {
         Cliente cliente = new Cliente();
         cliente.setDataNascimento(LocalDate.of(1980, 1, 1));

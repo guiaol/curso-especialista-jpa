@@ -7,13 +7,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class IniciarUnidadeDePersistencia {
-    // para executar o metodo main = alt + enter
-    public static void main(String[] args) {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("Ecommerce-PU");
 
+    public static void main(String[] args) {
+        EntityManagerFactory entityManagerFactory = Persistence
+                .createEntityManagerFactory("Ecommerce-PU");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        // Faca seus testes
         Produto produto = entityManager.find(Produto.class, 1);
         System.out.println(produto.getNome());
 

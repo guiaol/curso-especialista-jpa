@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class CascadeTypeMergeTest extends EntityManagerTest {
 
-    @Test
+    // @Test
     public void atualizarProdutoComCategoria() {
         Produto produto = new Produto();
         produto.setId(1);
@@ -36,7 +36,6 @@ public class CascadeTypeMergeTest extends EntityManagerTest {
         Categoria categoriaVerificacao = entityManager.find(Categoria.class, categoria.getId());
         Assert.assertEquals("Tablets", categoriaVerificacao.getNome());
     }
-
 
     // @Test
     public void atualizarPedidoComItens() {
@@ -69,7 +68,7 @@ public class CascadeTypeMergeTest extends EntityManagerTest {
         Assert.assertTrue(itemPedidoVerificacao.getQuantidade().equals(3));
     }
 
-//    @Test
+    // @Test
     public void atualizarItemPedidoComPedido() {
         Cliente cliente = entityManager.find(Cliente.class, 1);
         Produto produto = entityManager.find(Produto.class, 1);

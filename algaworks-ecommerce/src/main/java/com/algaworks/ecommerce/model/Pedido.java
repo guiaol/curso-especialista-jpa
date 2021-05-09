@@ -22,7 +22,7 @@ public class Pedido extends EntidadeBaseInteger {
             foreignKey = @ForeignKey(name = "fk_pedido_cliente"))
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;
 
     @Column(name = "data_criacao", updatable = false, nullable = false)
@@ -54,11 +54,12 @@ public class Pedido extends EntidadeBaseInteger {
         return StatusPedido.PAGO.equals(status);
     }
 
-    //    @PrePersist
+//    @PrePersist
 //    @PreUpdate
     public void calcularTotal() {
         if (itens != null) {
-            total = itens.stream().map(i -> new BigDecimal(i.getQuantidade()).multiply(i.getPrecoProduto()))
+            total = itens.stream().map(
+                        i -> new BigDecimal(i.getQuantidade()).multiply(i.getPrecoProduto()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         } else {
             total = BigDecimal.ZERO;
