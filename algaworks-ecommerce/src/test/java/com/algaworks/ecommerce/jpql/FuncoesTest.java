@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.jpql;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Categoria;
+import com.algaworks.ecommerce.model.Pedido;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,6 +11,20 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class FuncoesTest extends EntityManagerTest {
+
+    @Test
+    public void aplicarFuncaoNativas() {
+        String jpql = "select p from Pedido p where function('acima_media_faturamento', p.total) = 1";
+//        String jpql = "select function('dayname', p.dataCriacao) from Pedido p where function('acima_media_faturamento', p.total) = 1";
+
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(jpql, Pedido.class);
+
+        List<Pedido> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(obj -> System.out.println(obj));
+    }
+
     @Test
     public void aplicarFuncaoColecao() {
         String jpql = "select size(p.itens) from Pedido p where size(p.itens) > 1";
