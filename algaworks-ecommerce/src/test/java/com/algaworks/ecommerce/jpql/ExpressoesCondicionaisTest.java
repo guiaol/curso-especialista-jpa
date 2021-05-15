@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.jpql;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.Cliente;
 import com.algaworks.ecommerce.model.Pedido;
 import com.algaworks.ecommerce.model.Produto;
 import org.junit.Assert;
@@ -10,10 +11,42 @@ import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class ExpressoesCondicionaisTest extends EntityManagerTest {
+
+    @Test
+    public void usarExpressaoIn() {
+//        String jpql = "select p from Pedido p where p.id in (1, 3 ,4)";
+
+//        List<Integer> parametros = Arrays.asList(1, 3, 4);
+//        String jpql = "select p from Pedido p where p.id in (:lista)";
+//
+//        TypedQuery<Pedido> typedQuery = entityManager.createQuery(jpql, Pedido.class);
+//        typedQuery.setParameter("lista", parametros);
+//        List<Pedido> lista = typedQuery.getResultList();
+
+//        Cliente cliente1 = entityManager.find(Cliente.class, 1);
+//        Cliente cliente2 = entityManager.find(Cliente.class, 2);
+
+        Cliente cliente1 = entityManager.find(Cliente.class, 1);
+        cliente1.setId(1);
+
+        Cliente cliente2 = entityManager.find(Cliente.class, 2);
+        cliente2.setId(2);
+
+        List<Cliente> clientes = Arrays.asList(cliente1, cliente2);
+        String jpql = "select p from Pedido p where p.cliente in (:clientes)";
+
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(jpql, Pedido.class);
+        typedQuery.setParameter("clientes", clientes);
+        List<Pedido> lista = typedQuery.getResultList();
+
+        Assert.assertFalse(lista.isEmpty());
+    }
+
 
     @Test
     public void usarExpressaoCase() {
