@@ -13,6 +13,30 @@ import java.util.List;
 public class SubqueriesTest extends EntityManagerTest {
 
     @Test
+    public void pesquisarComINExercicio() {
+
+        // todos os pedidos que tenham produtos da categoria 2
+        String jpql = "select p " +
+                "from Pedido p " +
+                "where p.id in (" +
+                "   select p2.id " +
+                "   from ItemPedido i2 " +
+                "   join i2.pedido p2 " +
+                "   join i2.produto pro2 " +
+                "   join pro2.categorias cat2 " +
+                "   where cat2.id = :categoria" +
+                ")";
+
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(jpql, Pedido.class);
+        typedQuery.setParameter("categoria", 2);
+
+        List<Pedido> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(obj -> System.out.println("ID: " + obj.getId()));
+    }
+
+    @Test
     public void pesquisarComExists() {
 
         String jpql = "select p from Produto p where exists (" +
