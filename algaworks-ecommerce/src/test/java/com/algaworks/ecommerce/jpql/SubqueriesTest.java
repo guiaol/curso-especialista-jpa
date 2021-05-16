@@ -13,6 +13,34 @@ import java.util.List;
 public class SubqueriesTest extends EntityManagerTest {
 
     @Test
+    public void pesquisarComIn() {
+
+//        String jpql = "select distinct p " +
+//                "from Pedido p " +
+//                "join p.itens i " +
+//                "join i.produto pro " +
+//                "where pro.preco > 100";
+
+        String jpql = "select p " +
+                "from Pedido p " +
+                "where p.id in (" +
+                "   select p2.id " +
+                "   from ItemPedido i2 " +
+                "   join i2.pedido p2 " +
+                "   join i2.produto pro2" +
+                "   where pro2.preco > 100" +
+                ")";
+
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(jpql, Pedido.class);
+
+        List<Pedido> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(obj -> System.out.println("ID: " + obj.getId()));
+    }
+
+
+    @Test
     public void pesquisarSubqueries() {
 
         // bons clientes versao 2. Que compram acima de 100 reais.
