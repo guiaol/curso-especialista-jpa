@@ -13,6 +13,24 @@ import java.util.List;
 public class SubqueriesTest extends EntityManagerTest {
 
     @Test
+    public void pesquisarComExists() {
+
+        String jpql = "select p from Produto p where exists (" +
+                "   select 1 from ItemPedido ip2 " +
+                "   join ip2.produto p2" +
+                "   where p2 = p" +
+                ")";
+
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(jpql, Produto.class);
+
+        List<Produto> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(obj -> System.out.println("ID: " + obj.getId()));
+    }
+
+
+    @Test
     public void pesquisarComIn() {
 
 //        String jpql = "select distinct p " +
@@ -38,7 +56,6 @@ public class SubqueriesTest extends EntityManagerTest {
 
         lista.forEach(obj -> System.out.println("ID: " + obj.getId()));
     }
-
 
     @Test
     public void pesquisarSubqueries() {
@@ -79,5 +96,4 @@ public class SubqueriesTest extends EntityManagerTest {
 
         lista.forEach(obj -> System.out.println("ID: " + obj.getId() + " preço:" + obj.getNome()));
     }
-
 }
