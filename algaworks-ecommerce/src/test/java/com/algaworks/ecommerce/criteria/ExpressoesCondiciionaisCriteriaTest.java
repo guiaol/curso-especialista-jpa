@@ -17,6 +17,23 @@ import java.util.List;
 public class ExpressoesCondiciionaisCriteriaTest extends EntityManagerTest {
 
     @Test
+    public void usarIsNull() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Produto> criteriaQuery = criteriaBuilder.createQuery(Produto.class);
+        Root<Produto> root = criteriaQuery.from(Produto.class);
+
+        criteriaQuery.select(root);
+//        criteriaQuery.where(root.get(Produto_.foto).isNull());
+        criteriaQuery.where(criteriaBuilder.isNull(root.get(Produto_.foto)));
+
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Produto> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(dto -> System.out.println("ID: " + dto.getId() + ", Nome: " + dto.getNome()));
+    }
+
+    @Test
     public void usarExpressaoCondicionalLike() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Cliente> criteriaQuery = criteriaBuilder.createQuery(Cliente.class);
