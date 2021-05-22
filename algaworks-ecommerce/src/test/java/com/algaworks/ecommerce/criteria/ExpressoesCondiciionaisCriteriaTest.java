@@ -12,9 +12,46 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ExpressoesCondiciionaisCriteriaTest extends EntityManagerTest {
+
+    @Test
+    public void usarMaiorMenor() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Produto> criteriaQuery = criteriaBuilder.createQuery(Produto.class);
+        Root<Produto> root = criteriaQuery.from(Produto.class);
+
+        criteriaQuery.select(root);
+
+//        criteriaQuery.where(criteriaBuilder.greaterThanOrEqualTo(root.get(Produto_.preco), new BigDecimal(799)));
+        criteriaQuery.where(criteriaBuilder.greaterThan(root.get(Produto_.preco), new BigDecimal(799)),
+                            criteriaBuilder.lessThan(root.get(Produto_.preco), new BigDecimal(3500)));
+
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Produto> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(p -> System.out.println("ID: " + p.getId() + ", Nome: " + p.getNome()));
+    }
+
+    @Test
+    public void usarIsEmpty() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Produto> criteriaQuery = criteriaBuilder.createQuery(Produto.class);
+        Root<Produto> root = criteriaQuery.from(Produto.class);
+
+        criteriaQuery.select(root);
+//        criteriaQuery.where(criteriaBuilder.isEmpty(root.get(Produto_.categorias)));
+        criteriaQuery.where(criteriaBuilder.isNotEmpty(root.get(Produto_.categorias)));
+
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Produto> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(dto -> System.out.println("ID: " + dto.getId() + ", Nome: " + dto.getNome()));
+    }
 
     @Test
     public void usarIsNull() {
@@ -24,6 +61,9 @@ public class ExpressoesCondiciionaisCriteriaTest extends EntityManagerTest {
 
         criteriaQuery.select(root);
 //        criteriaQuery.where(root.get(Produto_.foto).isNull());
+        criteriaQuery.where(criteriaBuilder.isNull(root.get(Produto_.foto)));
+//        criteriaQuery.where(criteriaBuilder.isNotNull(root.get(Produto_.foto)));
+
         criteriaQuery.where(criteriaBuilder.isNull(root.get(Produto_.foto)));
 
         TypedQuery<Produto> typedQuery = entityManager.createQuery(criteriaQuery);
