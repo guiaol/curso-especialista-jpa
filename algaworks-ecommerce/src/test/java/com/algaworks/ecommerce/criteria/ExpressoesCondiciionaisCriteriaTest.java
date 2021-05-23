@@ -2,6 +2,9 @@ package com.algaworks.ecommerce.criteria;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.*;
+import com.algaworks.ecommerce.model.Cliente_;
+import com.algaworks.ecommerce.model.Pedido_;
+import com.algaworks.ecommerce.model.Produto_;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,6 +19,33 @@ import java.util.Calendar;
 import java.util.List;
 
 public class ExpressoesCondiciionaisCriteriaTest extends EntityManagerTest {
+
+    @Test
+    public void usarExpressaoCase() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+
+        criteriaQuery.multiselect(
+            root.get(Pedido_.id),
+            criteriaBuilder.selectCase(root.get(Pedido_.STATUS))
+//                .when(StatusPedido.PAGO.toString(), "Foi Pago")
+//                .when(StatusPedido.AGUARDANDO.toString(), "Esta aguardando")
+//                .otherwise(root.get(Pedido_.status))
+            criteriaBuilder.selectCase(root.get(Pedido_.pagamento).type().as(String.class))
+                    .when("boleto", "Foi Pago com Boleto")
+                    .when("cartao", "Foi Pago com Cartao")
+                    .otherwise("Nao identificado")
+
+        );
+
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        List<Object[]> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(arr -> System.out.println(arr[0] + ", " + arr[1]));
+    }
 
     @Test
     public void usarExpressaoDiferente() {
