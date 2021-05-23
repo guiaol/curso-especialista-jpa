@@ -7,7 +7,6 @@ import com.algaworks.ecommerce.model.StatusPagamento;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import java.util.Date;

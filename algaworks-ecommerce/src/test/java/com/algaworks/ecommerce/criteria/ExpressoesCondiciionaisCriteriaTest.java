@@ -14,11 +14,49 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.List;
 
 public class ExpressoesCondiciionaisCriteriaTest extends EntityManagerTest {
+
+    @Test
+    public void usarExpressaoIn02() {
+        Cliente cliente01 = entityManager.find(Cliente.class, 1);
+
+        Cliente cliente02 = new Cliente();
+        cliente02.setId(2);
+
+        List<Cliente> clientes = Arrays.asList(cliente01, cliente02);
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Pedido> criteriaQuery = criteriaBuilder.createQuery(Pedido.class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+
+        criteriaQuery.select(root);
+        criteriaQuery.where(root.get(Pedido_.cliente).in(clientes));
+
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Pedido> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+    }
+
+    @Test
+    public void usarExpressaoIn01() {
+        List<Integer> ids = Arrays.asList(1, 2, 3, 4);
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Pedido> criteriaQuery = criteriaBuilder.createQuery(Pedido.class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+
+        criteriaQuery.select(root);
+        criteriaQuery.where(root.get(Pedido_.id).in(ids));
+
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Pedido> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+    }
 
     @Test
     public void usarExpressaoCase() {
@@ -28,7 +66,7 @@ public class ExpressoesCondiciionaisCriteriaTest extends EntityManagerTest {
 
         criteriaQuery.multiselect(
             root.get(Pedido_.id),
-            criteriaBuilder.selectCase(root.get(Pedido_.STATUS))
+//            criteriaBuilder.selectCase(root.get(Pedido_.STATUS))
 //                .when(StatusPedido.PAGO.toString(), "Foi Pago")
 //                .when(StatusPedido.AGUARDANDO.toString(), "Esta aguardando")
 //                .otherwise(root.get(Pedido_.status))

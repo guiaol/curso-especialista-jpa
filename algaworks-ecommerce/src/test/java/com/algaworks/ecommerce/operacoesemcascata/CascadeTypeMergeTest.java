@@ -3,10 +3,8 @@ package com.algaworks.ecommerce.operacoesemcascata;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.*;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 

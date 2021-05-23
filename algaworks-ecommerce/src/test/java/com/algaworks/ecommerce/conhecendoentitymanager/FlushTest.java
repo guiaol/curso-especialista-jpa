@@ -3,7 +3,6 @@ package com.algaworks.ecommerce.conhecendoentitymanager;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Pedido;
 import com.algaworks.ecommerce.model.StatusPedido;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class FlushTest extends EntityManagerTest {
