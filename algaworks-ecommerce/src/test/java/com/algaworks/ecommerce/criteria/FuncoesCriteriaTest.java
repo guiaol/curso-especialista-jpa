@@ -1,18 +1,84 @@
 package com.algaworks.ecommerce.criteria;
 
 import com.algaworks.ecommerce.EntityManagerTest;
-import com.algaworks.ecommerce.model.Cliente;
+import com.algaworks.ecommerce.model.*;
 import com.algaworks.ecommerce.model.Cliente_;
+import com.algaworks.ecommerce.model.PagamentoBoleto_;
+import com.algaworks.ecommerce.model.Pedido_;
 import org.junit.Assert;
 import org.junit.Test;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class FuncoesCriteriaTest extends EntityManagerTest {
+
+    @Test
+    public void aplicarFuncaoNumero() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+
+        criteriaQuery.multiselect(
+                root.get(Pedido_.id),
+                criteriaBuilder.abs(criteriaBuilder.prod(root.get(Pedido_.id), -1)),
+                criteriaBuilder.mod(root.get(Pedido_.id), 2),
+                criteriaBuilder.sqrt(root.get(Pedido_.total))
+        );
+
+        criteriaQuery.where(criteriaBuilder.greaterThan(criteriaBuilder.sqrt(root.get(Pedido_.total)), 10.0));
+
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        List<Object[]> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(arr -> System.out.println(
+                arr[0]
+                        + ", abs: " + arr[1]
+                        + ", mod: " + arr[2]
+                        + ", sqrt: " + arr[3]));
+    }
+
+    @Test
+    public void aplicarFuncaoData() {
+        // current_date, current_time, current_timestamp
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+        Join<Pedido, Pagamento> joinPagamento = root.join(Pedido_.pagamento);
+        Join<Pedido, PagamentoBoleto> joinPagamentoBoleto = criteriaBuilder.treat(joinPagamento, PagamentoBoleto.class);
+
+        criteriaQuery.multiselect(
+                root.get(Pedido_.id),
+                criteriaBuilder.currentDate(),
+                criteriaBuilder.currentTime(),
+                criteriaBuilder.currentTimestamp()
+        );
+
+        criteriaQuery.where(
+                criteriaBuilder.between(criteriaBuilder.currentDate(),
+                    root.get(Pedido_.dataCriacao).as(java.sql.Date.class),
+                    joinPagamentoBoleto.get(PagamentoBoleto_.dataVencimento).as(java.sql.Date.class)),
+                criteriaBuilder.equal(root.get(Pedido_.status), StatusPedido.AGUARDANDO)
+        );
+
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        List<Object[]> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+
+        lista.forEach(arr -> System.out.println(
+                arr[0]
+                        + ", current_date: " + arr[1]
+                        + ", current_time: " + arr[2]
+                        + ", current_timestamp: " + arr[3]));
+    }
 
     @Test
     public void aplicarFuncoesString() {

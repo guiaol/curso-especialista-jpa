@@ -6,7 +6,6 @@ import com.algaworks.ecommerce.model.Cliente;
 import com.algaworks.ecommerce.model.Cliente_;
 import com.algaworks.ecommerce.model.Pedido;
 import com.algaworks.ecommerce.model.Produto;
-import org.hibernate.Criteria;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +14,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.List;
 
