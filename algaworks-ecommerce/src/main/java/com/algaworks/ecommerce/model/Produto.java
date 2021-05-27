@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.model;
 
+import com.algaworks.ecommerce.dto.ProdutoDTO;
 import com.algaworks.ecommerce.listener.GenericoListener;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,15 @@ import java.util.List;
                                 @FieldResult(name = "dataCriacao", column = "prd_data_criacao"),
                                 @FieldResult(name = "dataUltimaAtualizacao",
                                         column = "prd_data_ultima_atualizacao")
-                        }) })
+                        }) }),
+        @SqlResultSetMapping(name = "ecm_produto.ProdutoDTO",
+                classes = {
+                        @ConstructorResult(targetClass = ProdutoDTO.class,
+                                columns = {
+                                        @ColumnResult(name = "prd_id", type = Integer.class),
+                                        @ColumnResult(name = "prd_nome", type = String.class)
+                                })
+                })
 })
 @NamedQueries({
         @NamedQuery(name = "Produto.listar", query = "select p from Produto p"),
