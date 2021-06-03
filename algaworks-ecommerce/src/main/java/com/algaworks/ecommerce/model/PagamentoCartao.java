@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Entity
 public class PagamentoCartao extends Pagamento {
 
+    @NotEmpty
     @Column(name = "numero_cartao", length = 50)
     private String numeroCartao;
 }
