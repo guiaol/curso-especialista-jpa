@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.model;
 
 import com.algaworks.ecommerce.dto.ProdutoDTO;
 import com.algaworks.ecommerce.listener.GenericoListener;
+import com.algaworks.ecommerce.model.converter.BooleanToSimNaoConverter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -80,6 +81,11 @@ public class Produto extends EntidadeBaseInteger {
 
     @Lob
     private byte[] foto;
+
+    @Convert(converter = BooleanToSimNaoConverter.class)
+    @NotNull
+    @Column(nullable = false, length = 3)
+    private Boolean ativo = Boolean.FALSE;
 
     @ManyToMany
     @JoinTable(name = "produto_categoria",
