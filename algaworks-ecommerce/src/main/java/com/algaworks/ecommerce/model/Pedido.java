@@ -26,11 +26,11 @@ import java.util.List;
 @Entity
 @Table(name = "pedido")
 public class Pedido extends EntidadeBaseInteger
-//        implements PersistentAttributeInterceptable
+        implements PersistentAttributeInterceptable
 {
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_pedido_cliente"))
     private Cliente cliente;
@@ -40,6 +40,7 @@ public class Pedido extends EntidadeBaseInteger
     private List<ItemPedido> itens;
 
     @PastOrPresent
+    @NotNull
     @Column(name = "data_criacao", updatable = false, nullable = false)
     private LocalDateTime dataCriacao;
 
@@ -51,8 +52,8 @@ public class Pedido extends EntidadeBaseInteger
     @Column(name = "data_conclusao")
     private LocalDateTime dataConclusao;
 
-//    @LazyToOne(LazyToOneOption.NO_PROXY)
-    @OneToOne(mappedBy = "pedido")
+    @LazyToOne(LazyToOneOption.NO_PROXY)
+    @OneToOne(mappedBy = "pedido", fetch = FetchType.LAZY)
     private NotaFiscal notaFiscal;
 
     @NotNull
@@ -65,23 +66,74 @@ public class Pedido extends EntidadeBaseInteger
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
 
-//    @LazyToOne(LazyToOneOption.NO_PROXY)
-    @OneToOne(mappedBy = "pedido")
+    @LazyToOne(LazyToOneOption.NO_PROXY)
+    @OneToOne(mappedBy = "pedido", fetch = FetchType.LAZY)
     private Pagamento pagamento;
 
     @Embedded
     private EnderecoEntregaPedido enderecoEntrega;
 
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
+    @Transient
+    private PersistentAttributeInterceptor persistentAttributeInterceptor;
+
+    public NotaFiscal getNotaFiscal() {
+        if (this.persistentAttributeInterceptor != null) {
+            return (NotaFiscal) persistentAttributeInterceptor
+                    .readObject(this, "notaFiscal", this. notaFiscal);
+        }
+
+        return this.notaFiscal;
+    }
+
+    public void setNotaFiscal(NotaFiscal notaFiscal) {
+        if (this.persistentAttributeInterceptor != null) {
+            this.notaFiscal = (NotaFiscal) persistentAttributeInterceptor
+                    .writeObject(this, "notaFiscal", this.notaFiscal, notaFiscal);
+        } else {
+            this.notaFiscal = notaFiscal;
+        }
+    }
+
+    public Pagamento getPagamento() {
+        if (this.persistentAttributeInterceptor != null) {
+            return (Pagamento) persistentAttributeInterceptor
+                    .readObject(this, "pagamento", this.pagamento);
+        }
+
+        return this.pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        if (this.persistentAttributeInterceptor != null) {
+            this.pagamento = (Pagamento) persistentAttributeInterceptor
+                    .writeObject(this, "pagamento", this.pagamento, pagamento);
+        } else {
+            this.pagamento = pagamento;
+        }
+    }
+
+    @Override
+    public PersistentAttributeInterceptor $$_hibernate_getInterceptor() {
+        return this.persistentAttributeInterceptor;
+    }
+
+    @Override
+    public void $$_hibernate_setInterceptor(PersistentAttributeInterceptor persistentAttributeInterceptor) {
+        this.persistentAttributeInterceptor = persistentAttributeInterceptor;
+    }
+
     public boolean isPago() {
         return StatusPedido.PAGO.equals(status);
     }
 
-//    @PrePersist
+    //    @PrePersist
 //    @PreUpdate
     public void calcularTotal() {
         if (itens != null) {
             total = itens.stream().map(
-                        i -> new BigDecimal(i.getQuantidade()).multiply(i.getPrecoProduto()))
+                    i -> new BigDecimal(i.getQuantidade()).multiply(i.getPrecoProduto()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         } else {
             total = BigDecimal.ZERO;
@@ -124,51 +176,4 @@ public class Pedido extends EntidadeBaseInteger
     public void aoCarregar() {
         System.out.println("Após carregar o Pedido.");
     }
-
-//    public NotaFiscal getNotaFiscal() {
-//        if (this.persistentAttributeInterceptor != null) {
-//            return (NotaFiscal) persistentAttributeInterceptor.readObject(this,"notaFiscal", this.notaFiscal);
-//        }
-//
-//        return this.notaFiscal;
-//    }
-//
-//    public void setNotaFiscal(NotaFiscal notaFiscal) {
-//        if (this.persistentAttributeInterceptor != null) {
-//            this.notaFiscal = (NotaFiscal) persistentAttributeInterceptor.writeObject(this, "notaFiscal", this.notaFiscal, notaFiscal);
-//        } else {
-//            this.notaFiscal = notaFiscal;
-//        }
-//    }
-//
-//    public Pagamento getPagamento() {
-//        if (this.persistentAttributeInterceptor != null) {
-//            return (Pagamento) persistentAttributeInterceptor.readObject(this,"pagamento", this.pagamento);
-//        }
-//
-//        return this.pagamento;
-//    }
-//
-//    public void setPagamento(Pagamento pagamento) {
-//        if (this.persistentAttributeInterceptor != null) {
-//            this.pagamento = (Pagamento) persistentAttributeInterceptor.writeObject(this, "pagamento", this.pagamento, pagamento);
-//        } else {
-//            this.pagamento = pagamento;
-//        }
-//    }
-//
-//    @Setter(AccessLevel.NONE)
-//    @Getter(AccessLevel.NONE)
-//    @Transient
-//    private PersistentAttributeInterceptor persistentAttributeInterceptor;
-//
-//    @Override
-//    public PersistentAttributeInterceptor $$_hibernate_getInterceptor() {
-//        return this.persistentAttributeInterceptor;
-//    }
-//
-//    @Override
-//    public void $$_hibernate_setInterceptor(PersistentAttributeInterceptor interceptor) {
-//        this.persistentAttributeInterceptor = interceptor;
-//    }
 }
