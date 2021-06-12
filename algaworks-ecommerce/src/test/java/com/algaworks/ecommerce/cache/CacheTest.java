@@ -17,12 +17,27 @@ public class CacheTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("Ecommerce-PU");
+        entityManagerFactory = Persistence
+                .createEntityManagerFactory("Ecommerce-PU");
     }
 
     @AfterClass
     public static void tearDownAfterClass() {
         entityManagerFactory.close();
+    }
+
+    @Test
+    public void analisarOpcoesCache() {
+        Cache cache = entityManagerFactory.getCache();
+
+        EntityManager entityManager1 = entityManagerFactory.createEntityManager();
+
+        System.out.println("Buscando a partir da instância 1:");
+        entityManager1
+                .createQuery("select p from Pedido p", Pedido.class)
+                .getResultList();
+
+        Assert.assertTrue(cache.contains(Pedido.class, 1));
     }
 
     @Test
@@ -53,9 +68,9 @@ public class CacheTest {
                 .getResultList();
 
         System.out.println("Removendo do cache");
-//        cache.evictAll();
+        cache.evictAll();
 //        cache.evict(Pedido.class);
-        cache.evict(Pedido.class, 1);
+//        cache.evict(Pedido.class, 1);
 
         System.out.println("Buscando a partir da instância 2:");
         entityManager2.find(Pedido.class, 1);
@@ -68,13 +83,12 @@ public class CacheTest {
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
 
         System.out.println("Buscando a partir da instância 1:");
-        entityManager1.createQuery("select p from Pedido p", Pedido.class)
+        entityManager1
+                .createQuery("select p from Pedido p", Pedido.class)
                 .getResultList();
 
         System.out.println("Buscando a partir da instância 2:");
-//        entityManager2.find(Pedido.class, 1);
-        entityManager2.createQuery("select p from Pedido p", Pedido.class)
-                .getResultList();
+        entityManager2.find(Pedido.class, 1);
     }
 
     @Test
