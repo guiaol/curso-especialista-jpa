@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -30,6 +31,7 @@ public class NotaFiscal extends EntidadeBaseInteger {
     @NotEmpty
     @Column(nullable = false)
     @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] xml;
 
     @PastOrPresent
