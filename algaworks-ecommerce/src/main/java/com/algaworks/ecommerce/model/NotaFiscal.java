@@ -16,14 +16,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "nota_fiscal")
-public class NotaFiscal {
-
-    @Id
-    private Integer id;
-
-    @Version
-    @Column(name = "versao")
-    private Integer version;
+public class NotaFiscal extends EntidadeBaseInteger {
 
     @NotNull
     @MapsId

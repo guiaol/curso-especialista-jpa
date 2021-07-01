@@ -13,14 +13,7 @@ import javax.validation.constraints.NotNull;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
 @Table(name = "pagamento")
-public abstract class Pagamento {
-
-    @Id
-    private Integer id;
-
-    @Version
-    @Column(name = "versao")
-    private Integer version;
+public abstract class Pagamento extends EntidadeBaseInteger {
 
     @NotNull
     @MapsId
