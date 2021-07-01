@@ -5,7 +5,6 @@ import com.algaworks.ecommerce.listener.GenericoListener;
 import com.algaworks.ecommerce.model.converter.BooleanToSimNaoConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -25,7 +24,6 @@ import java.util.List;
         @NamedNativeQuery(name = "ecm_produto.listar",
                 query = "select * from ecm_produto", resultSetMapping = "ecm_produto.Produto")
 })
-
 @SqlResultSetMappings({
         @SqlResultSetMapping(name = "produto_loja.Produto",
                 entities = { @EntityResult(entityClass = Produto.class) }),
@@ -51,14 +49,14 @@ import java.util.List;
                 })
 })
 @NamedQueries({
-        @NamedQuery(name = "Produto.listar", query = "select p from Produto p"),
-        @NamedQuery(name = "Produto.listarPorCategoria", query = "select p from Produto p where exists (select 1 from Categoria c2 join c2.produtos p2 where p2 = p and c2.id = :categoria)")
+    @NamedQuery(name = "Produto.listar", query = "select p from Produto p"),
+    @NamedQuery(name = "Produto.listarPorCategoria", query = "select p from Produto p where exists (select 1 from Categoria c2 join c2.produtos p2 where p2 = p and c2.id = :categoria)")
 })
 @EntityListeners({ GenericoListener.class })
 @Entity
 @Table(name = "produto",
-        uniqueConstraints = { @UniqueConstraint(name = "unq_nome_produto", columnNames = { "nome" }) },
-        indexes = { @Index(name = "idx_produto_nome", columnList = "nome") })
+        uniqueConstraints = { @UniqueConstraint(name = "unq_nome", columnNames = { "nome" }) },
+        indexes = { @Index(name = "idx_nome", columnList = "nome") })
 public class Produto extends EntidadeBaseInteger {
 
     @PastOrPresent
@@ -74,19 +72,18 @@ public class Produto extends EntidadeBaseInteger {
     @Column(length = 100, nullable = false)
     private String nome;
 
-//    @Lob
+    @Lob
     private String descricao;
 
     @Positive
     private BigDecimal preco;
 
     @Lob
-    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] foto;
 
     @Convert(converter = BooleanToSimNaoConverter.class)
     @NotNull
-    @Column(nullable = false, length = 3)
+    @Column(length = 3, nullable = false)
     private Boolean ativo = Boolean.FALSE;
 
     @ManyToMany

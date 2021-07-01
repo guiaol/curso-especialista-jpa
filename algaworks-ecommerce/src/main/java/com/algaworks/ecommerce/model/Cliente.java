@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +12,10 @@ import java.util.Map;
 @Getter
 @Setter
 @NamedStoredProcedureQuery(name = "compraram_acima_media", procedureName = "compraram_acima_media",
-    parameters = {
-        @StoredProcedureParameter(name = "ano", type = Integer.class, mode = ParameterMode.IN)
-    },
-    resultClasses = Cliente.class
+        parameters = {
+                @StoredProcedureParameter(name = "ano", type = Integer.class, mode = ParameterMode.IN)
+        },
+        resultClasses = Cliente.class
 )
 @SecondaryTable(name = "cliente_detalhe",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "cliente_id"),
@@ -26,7 +23,7 @@ import java.util.Map;
 @Entity
 @Table(name = "cliente",
         uniqueConstraints = { @UniqueConstraint(name = "unq_cpf", columnNames = { "cpf" }) },
-        indexes = { @Index(name = "idx_cliente_nome", columnList = "nome") })
+        indexes = { @Index(name = "idx_nome", columnList = "nome") })
 public class Cliente extends EntidadeBaseInteger {
 
     @NotBlank
@@ -71,4 +68,7 @@ public class Cliente extends EntidadeBaseInteger {
         }
     }
 }
+
+
+
 

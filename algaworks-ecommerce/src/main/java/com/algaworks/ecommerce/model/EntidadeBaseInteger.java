@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -14,10 +17,9 @@ public class EntidadeBaseInteger {
 
     @EqualsAndHashCode.Include
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Version
-    @Column(name = "versao")
-    private Integer version;
+    private Integer versao;
 }

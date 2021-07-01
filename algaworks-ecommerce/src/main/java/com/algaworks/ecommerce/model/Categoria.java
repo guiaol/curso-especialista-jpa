@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "categoria",
-        uniqueConstraints = { @UniqueConstraint(name = "unq_nome_categoria", columnNames = { "nome" }) })
+        uniqueConstraints = { @UniqueConstraint(name = "unq_nome", columnNames = { "nome" }) })
 public class Categoria extends EntidadeBaseInteger {
 
     @NotBlank

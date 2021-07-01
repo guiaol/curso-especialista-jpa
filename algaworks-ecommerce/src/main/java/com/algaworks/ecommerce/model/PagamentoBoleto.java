@@ -3,7 +3,9 @@ package com.algaworks.ecommerce.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,6 +23,6 @@ public class PagamentoBoleto extends Pagamento {
 
     @NotNull
     @FutureOrPresent
-    @Column(name="data_vencimento")
+    @Column(name = "data_vencimento")
     private LocalDate dataVencimento;
 }

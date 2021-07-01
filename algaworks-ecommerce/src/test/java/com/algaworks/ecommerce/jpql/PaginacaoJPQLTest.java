@@ -2,7 +2,6 @@ package com.algaworks.ecommerce.jpql;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Categoria;
-import com.algaworks.ecommerce.model.Cliente;
 import org.junit.Assert;
 import org.junit.Test;
 

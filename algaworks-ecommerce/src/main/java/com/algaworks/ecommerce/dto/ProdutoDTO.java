@@ -14,5 +14,4 @@ public class ProdutoDTO {
     private Integer id;
 
     private String nome;
-
 }

@@ -2,14 +2,8 @@ package com.algaworks.ecommerce.model;
 
 import com.algaworks.ecommerce.listener.GenericoListener;
 import com.algaworks.ecommerce.listener.GerarNotaFiscalListener;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.engine.spi.PersistentAttributeInterceptable;
-import org.hibernate.engine.spi.PersistentAttributeInterceptor;
-import org.hibernate.validator.internal.util.stereotypes.Lazy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -19,7 +13,6 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -76,7 +69,8 @@ public class Pedido extends EntidadeBaseInteger
     @Column(name = "data_conclusao")
     private LocalDateTime dataConclusao;
 
-    //    @LazyToOne(LazyToOneOption.NO_PROXY)
+
+//    @LazyToOne(LazyToOneOption.NO_PROXY)
     @OneToOne(mappedBy = "pedido")
     private NotaFiscal notaFiscal;
 
@@ -90,7 +84,7 @@ public class Pedido extends EntidadeBaseInteger
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
 
-    //    @LazyToOne(LazyToOneOption.NO_PROXY)
+//    @LazyToOne(LazyToOneOption.NO_PROXY)
     @OneToOne(mappedBy = "pedido")
     private Pagamento pagamento;
 
@@ -152,12 +146,12 @@ public class Pedido extends EntidadeBaseInteger
         return StatusPedido.PAGO.equals(status);
     }
 
-    //    @PrePersist
+//    @PrePersist
 //    @PreUpdate
     public void calcularTotal() {
         if (itens != null) {
             total = itens.stream().map(
-                    i -> new BigDecimal(i.getQuantidade()).multiply(i.getPrecoProduto()))
+                        i -> new BigDecimal(i.getQuantidade()).multiply(i.getPrecoProduto()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         } else {
             total = BigDecimal.ZERO;

@@ -5,6 +5,7 @@ import javax.persistence.Converter;
 
 @Converter
 public class BooleanToSimNaoConverter implements AttributeConverter<Boolean, String> {
+
     @Override
     public String convertToDatabaseColumn(Boolean attribute) {
         return Boolean.TRUE.equals(attribute) ? "SIM" : "NAO";
